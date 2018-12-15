@@ -1,0 +1,3 @@
+enableInsecureLogin: true
+ingress:
+  enabled: disable
