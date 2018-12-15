@@ -53,3 +53,7 @@ kubectl get all --all-namespaces
 2. prometheus-operator
 3. kube-prometheus
 4. kubernetes-dashboard
+
+### TODO
+1. add the full values.yaml files in config section
+2. create automate the nginx ingress domain to lbr A record and CNAME record creation
