@@ -1,18 +1,31 @@
 #!/usr/bin/env bash
 
 source .do
-
-echo ":: Creating the kubernetes cluster"
-doctl kubernetes create --name ${CLUSTER_NAME} --node-pools "name=${DROPLET_POOL_NAME};size=${DROPLET_SIZE};count=${DROPLET_COUNT};${DROPLET_TAGS}" --region ${CLUSTER_REGION} --tag-names ${CLUSTER_TAGS} --version ${CLUSTER_VERSION} &> out.txt
-
-echo ":: Waiting for kubernetes cluster to start"
-while true; do
-  STATUS=$(doctl kubernetes list -o json | jq '.[] | select(.name=="dev") | .status.state')
-  if [ "${STATUS}" != '"provisioning"' ]; then
-    break
+STATUS=$(doctl kubernetes list -o json | jq ".[] | select(.name==\"${CLUSTER_NAME}\") | .status.state")
+if [ "${STATUS}" == "" ]; then
+  echo ":: Creating the kubernetes cluster"
+  doctl kubernetes create --name ${CLUSTER_NAME} --node-pools "name=${DROPLET_POOL_NAME};size=${DROPLET_SIZE};count=${DROPLET_COUNT};${DROPLET_TAGS}" --region ${CLUSTER_REGION} --tag-names ${CLUSTER_TAGS} --version ${CLUSTER_VERSION} &> out.txt
+  echo ":: Waiting for kubernetes cluster to start"
+  while true; do
+    STATUS=$(doctl kubernetes list -o json | jq ".[] | select(.name==\"${CLUSTER_NAME}\") | .status.state")
+    if [ "${STATUS}" != '"provisioning"' ]; then
+      break
+    fi
+    sleep 5;
+  done
+else
+  if [ "${STATUS}" == '"provisioning"' ]; then
+    echo ":: Waiting for kubernetes cluster to start"
+    while true; do
+      STATUS=$(doctl kubernetes list -o json | jq ".[] | select(.name==\"${CLUSTER_NAME}\") | .status.state")
+      if [ "${STATUS}" != '"provisioning"' ]; then
+        break
+      fi
+      sleep 5;
+    done
   fi
-  sleep 5;
-done
+fi
+
 echo ":: Downloading kubeconfig from DO"
 doctl kubernetes kubeconfig dev > kubeconfig
 
