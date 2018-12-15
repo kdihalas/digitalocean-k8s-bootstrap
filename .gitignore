@@ -1,3 +1,4 @@
 .token
-out.txt
 .do
+out.stderr.log
+out.stdout.log
