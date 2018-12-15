@@ -1,6 +1,31 @@
 #!/usr/bin/env bash
+
+source .do
+
+echo ":: Creating the kubernetes cluster"
+doctl kubernetes create --name ${CLUSTER_NAME} --node-pools "name=${DROPLET_POOL_NAME};size=${DROPLET_SIZE};count=${DROPLET_COUNT};${DROPLET_TAGS}" --region ${CLUSTER_REGION} --tag-names ${CLUSTER_TAGS} --version ${CLUSTER_VERSION} &> out.txt
+
+echo ":: Waiting for kubernetes cluster to start"
+while true; do
+  STATUS=$(doctl kubernetes list -o json | jq '.[] | select(.name=="dev") | .status.state')
+  if [ "${STATUS}" != '"provisioning"' ]; then
+    break
+  fi
+  sleep 5;
+done
+echo ":: Downloading kubeconfig from DO"
+doctl kubernetes kubeconfig dev > kubeconfig
+
+export KUBECONFIG=$(pwd)/kubeconfig
+echo ":: Check if kubeconfig works"
+kubectl get nodes
+if [ $? -ne 0 ]; then
+  echo "Looks like kubeconfig is invalid please debug manually";
+  exit -1;
+fi
+
 echo ":: Adding prerequisites"
-helm repo add coreos https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/ &> out.txt
+helm repo add coreos https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/ &>> out.txt
 helm repo add rook-beta https://charts.rook.io/master &>> out.txt
 
 echo "::: Creating namespaces"
