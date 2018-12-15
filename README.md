@@ -40,7 +40,7 @@ export DROPLET_TAGS="tag=workers;tag=default"
 2. After the script is done you will have 2 new files and a working cluster: .token, kubeconfig
 3. Verify the cluster
 ```
-export KUBECONFIG=KUBECONFIG
+export KUBECONFIG=$(pwd)/kubeconfig
 
 kubectl get all --all-namespaces
 
