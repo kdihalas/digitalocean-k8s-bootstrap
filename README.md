@@ -57,3 +57,4 @@ kubectl get all --all-namespaces
 ### TODO
 1. add the full values.yaml files in config section
 2. create automate the nginx ingress domain to lbr A record and CNAME record creation
+3. deploy rook for persistent storage to avoid the 7 block devices to 1 node limitation
