@@ -1,6 +1,7 @@
 # Fast-food kubernetes for digitalocean
 creates a DO kubernetes managed cluster and installs some addons.
 
+## Installing
 ### Prerequisites
 1. kubectl (1.12)
 2. helm (2.11)
@@ -8,7 +9,7 @@ creates a DO kubernetes managed cluster and installs some addons.
 4. doctl (1.12)
 5. Digitalocean token
 
-#### Create a .do file in the same folder with install.sh
+### Create a .do file in the same folder with install.sh
 ```
 export DIGITALOCEAN_ENABLE_BETA=1
 export DIGITALOCEAN_ACCESS_TOKEN=<your_do_token_here>
@@ -23,15 +24,7 @@ export DROPLET_COUNT="3"
 export DROPLET_TAGS="tag=workers;tag=default"
 
 ```
-
-### Addons
-1. nginx-ingress
-2. prometheus-operator
-3. kube-prometheus
-4. kubernetes-dashboard
-
-
-### First run
+### Install
 1. Run install.sh and wait
 ```
 # ./install.sh
@@ -45,3 +38,18 @@ export KUBECONFIG=$(pwd)/kubeconfig
 kubectl get all --all-namespaces
 
 ```
+
+### Scale
+```
+# scale to 10 nodes
+./scale.sh 10
+
+# scale down to 3 nodes
+./scale.sh 3
+```
+
+## Addons
+1. nginx-ingress
+2. prometheus-operator
+3. kube-prometheus
+4. kubernetes-dashboard
