@@ -2,3 +2,4 @@
 .do
 out.stderr.log
 out.stdout.log
+kubeconfig
