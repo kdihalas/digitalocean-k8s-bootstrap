@@ -7,7 +7,7 @@ exec 2>out.stderr.log
 waitKubernetes() {
   echo ":: Waiting for kubernetes cluster to start"
   while true; do
-    STATUS=$(doctl kubernetes list -o json | jq ".[] | select(.name==\"${CLUSTER_NAME}\") | .status.state")
+    STATUS=$(doctl kubernetes cluster list -o json | jq ".[] | select(.name==\"${CLUSTER_NAME}\") | .status.state")
     if [ "${STATUS}" != '"provisioning"' ]; then
       break
     fi
@@ -18,7 +18,7 @@ waitKubernetes() {
 checkKubeconfig() {
   export KUBECONFIG=$(pwd)/kubeconfig
   echo ":: Check if kubeconfig works"
-  kubectl get nodes
+  kubectl --kube-config ~/.kube/config get nodes
   if [ $? -ne 0 ]; then
     echo "Looks like kubeconfig is invalid please debug manually";
     exit -1;

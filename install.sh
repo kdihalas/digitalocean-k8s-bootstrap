@@ -1,19 +1,15 @@
 #!/usr/bin/env bash
 
 source lib.sh
-STATUS=$(doctl kubernetes list -o json | jq ".[] | select(.name==\"${CLUSTER_NAME}\") | .status.state")
+STATUS=$(doctl kubernetes cluster list -o json | jq ".[] | select(.name==\"${CLUSTER_NAME}\") | .status.state")
 if [ "${STATUS}" == "" ]; then
   echo ":: Creating the kubernetes cluster"
-  doctl kubernetes create --name ${CLUSTER_NAME} --node-pools "name=${DROPLET_POOL_NAME};size=${DROPLET_SIZE};count=${DROPLET_COUNT};${DROPLET_TAGS}" --region ${CLUSTER_REGION} --tag-names ${CLUSTER_TAGS} --version ${CLUSTER_VERSION}
-  waitKubernetes
+  doctl kubernetes cluster create ${CLUSTER_NAME} --count ${DROPLET_COUNT} --size ${DROPLET_SIZE} --region ${CLUSTER_REGION} --tag ${CLUSTER_TAGS} --version ${CLUSTER_VERSION}
 else
   if [ "${STATUS}" == '"provisioning"' ]; then
     waitKubernetes
   fi
 fi
-
-echo ":: Downloading kubeconfig from DO"
-doctl kubernetes kubeconfig dev > kubeconfig
 
 checkKubeconfig
 
