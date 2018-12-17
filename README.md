@@ -6,8 +6,8 @@ creates a DO kubernetes managed cluster and installs some addons.
 1. kubectl (1.12)
 2. helm (2.11)
 3. jq
-4. doctl (1.12.2)
-5. Digitalocean token
+4. doctl (1.12.2-release)
+5. Digitalocean token with read/write
 
 ### Create a .do file in the same folder with install.sh
 ```

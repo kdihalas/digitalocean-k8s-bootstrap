@@ -15,10 +15,14 @@ waitKubernetes() {
   done
 }
 
+createKubeconfig() {
+  doctl kubernetes cluster kubeconfig show ${CLUSTER_NAME} > kubeconfig
+}
+
 checkKubeconfig() {
   export KUBECONFIG=$(pwd)/kubeconfig
   echo ":: Check if kubeconfig works"
-  kubectl --kube-config ~/.kube/config get nodes
+  kubectl get nodes
   if [ $? -ne 0 ]; then
     echo "Looks like kubeconfig is invalid please debug manually";
     exit -1;

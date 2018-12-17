@@ -11,6 +11,7 @@ else
   fi
 fi
 
+createKubeconfig
 checkKubeconfig
 
 echo ":: Adding prerequisites"
