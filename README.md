@@ -17,11 +17,9 @@ export DIGITALOCEAN_ACCESS_TOKEN=<your_do_token_here>
 export CLUSTER_VERSION="1.12.3-do.1"
 export CLUSTER_REGION="fra1"
 export CLUSTER_NAME="dev"
-export CLUSTER_TAGS="tag=ams"
-export DROPLET_POOL_NAME="default"
+export CLUSTER_TAGS="fra"
 export DROPLET_SIZE="s-2vcpu-4gb"
 export DROPLET_COUNT="3"
-export DROPLET_TAGS="tag=workers;tag=default"
 
 ```
 ### Install
