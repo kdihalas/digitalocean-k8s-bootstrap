@@ -23,6 +23,7 @@ createNS dashboard
 createNS kube-public
 createNS monitoring
 createNS ingress
+createNS dns
 
 echo ":: Installing helm"
 echo ":: Creating service accounts"
@@ -45,7 +46,8 @@ helm init --force-upgrade --service-account tiller --tiller-namespace kube-syste
 
 echo ":: Waiting tiller to start"
 
-sleep 20;
+waitForTiller "kube-public"
+waitForTiller "kube-system"
 
 echo ":: Instaling the addons"
 echo ":: Installing nginx controller"
@@ -59,3 +61,6 @@ echo ":: To access grafana run:  kubectl port-forward -n monitoring service/kube
 echo ":: Installing kubrnetes dashboard"
 helm upgrade --tiller-namespace kube-public --namespace dashboard --force --install dashboard stable/kubernetes-dashboard -f config/dashboard/values.yaml
 echo ":: To login to cluster run: kubectl port-forward -n dashboard service/dashboard-kubernetes-dashboard 8080:443 and use the provided token in .token file"
+
+echo ":: Installing external dns"
+cat manifests/external-dns.yaml | sed -e "s/YOUR_DIGITALOCEAN_API_KEY/${DIGITALOCEAN_ACCESS_TOKEN}/g" | kubectl apply -f -

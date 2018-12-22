@@ -51,9 +51,8 @@ kubectl get all --all-namespaces
 2. prometheus-operator
 3. kube-prometheus
 4. kubernetes-dashboard
+5. external-dns
 
 ### TODO
 1. add the full values.yaml files in config section
-2. create automate the nginx ingress domain to lbr A record and CNAME record creation
-3. deploy rook for persistent storage to avoid the 7 block devices to 1 node limitation
-4. change wait for tiller to start to actual kubectl call to pods
+2. deploy rook for persistent storage to avoid the 7 block devices to 1 node limitation

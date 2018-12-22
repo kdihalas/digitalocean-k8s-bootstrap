@@ -15,6 +15,16 @@ waitKubernetes() {
   done
 }
 
+waitForTiller() {
+  while true; do
+    STATUS=$(kubectl get pod -n $1 -l app=helm -o json | jq '.items[0].status.phase')
+    if [ "${STATUS}" == '"Running"' ]; then
+      break;
+    fi
+    sleep 5;
+  done
+}
+
 createKubeconfig() {
   doctl kubernetes cluster kubeconfig show ${CLUSTER_NAME} > kubeconfig
 }
