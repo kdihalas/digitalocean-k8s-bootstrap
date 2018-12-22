@@ -52,7 +52,9 @@ kubectl get all --all-namespaces
 3. kube-prometheus
 4. kubernetes-dashboard
 5. external-dns
+6. cert-manager
 
 ### TODO
 1. add the full values.yaml files in config section
 2. deploy rook for persistent storage to avoid the 7 block devices to 1 node limitation
+3. create some examples on how to use the cluster
