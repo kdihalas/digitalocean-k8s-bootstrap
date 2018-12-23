@@ -67,4 +67,4 @@ echo ":: Installing external dns"
 cat manifests/external-dns.yaml | sed -e "s/YOUR_DIGITALOCEAN_API_KEY/${DIGITALOCEAN_ACCESS_TOKEN}/g" | kubectl apply -f -
 
 echo ":: Installing cert-manager"
-helm upgrade --tiller-namespace kube-public --namespace cert-manager --force --install dashboard stable/cert-manager -f config/cert-manager/values.yaml
+helm upgrade --tiller-namespace kube-public --namespace cert-manager --force --install cert-manager stable/cert-manager -f config/cert-manager/values.yaml
